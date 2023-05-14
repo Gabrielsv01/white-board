@@ -1,7 +1,13 @@
 import React from 'react';
 
+import {ReactFlowProvider} from 'reactflow';
+
 import Routers from './routes';
 
-const App = () => <Routers />;
+const App = () => (
+  <ReactFlowProvider>
+    <Routers />
+  </ReactFlowProvider>
+);
 
 export default App;

@@ -10,11 +10,7 @@ export const Content = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: ${theme.colors.primary};
-  padding: ${theme.spacing.xlarge}px ${theme.spacing.xxsmall}px;
-`;
-
-export const SubTitle = styled.h2`
-  margin-top: ${theme.spacing.xsmall}px;
-  color: ${theme.colors.white};
+  height: 100vh;
+  width: 100;
+  background-color: ${theme.colors.black};
 `;

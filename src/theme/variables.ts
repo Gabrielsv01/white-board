@@ -5,9 +5,11 @@ const theme: Theme = {
     primary: '#1f2ea3',
     secunday: '#016098',
     secundayDark: '#064875',
-    white: '#fff',
+    white: '#FFFFFF',
     black: '#000',
     red: 'red',
+    gray: '#c1c1c1',
+    orange: '#ff9500',
   },
   border: {
     radius: {

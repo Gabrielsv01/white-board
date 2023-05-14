@@ -6,6 +6,8 @@ export interface Theme {
     white: string;
     black: string;
     red: string;
+    gray: string;
+    orange: string;
   };
   border: {
     radius: {
