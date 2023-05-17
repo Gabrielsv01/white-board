@@ -6,7 +6,6 @@ import ReactFlow, {
   ConnectionMode,
   Controls,
   Connection,
-  Node as NodeFlow,
   useEdgesState,
   addEdge,
   useNodesState,
@@ -15,11 +14,14 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import {hideHandle} from 'shared/atoms/hideHandle';
-import {nodeProps, nodeSelectedID} from 'shared/atoms/nodeProps';
+import {NodeDataProps, nodeProps} from 'shared/atoms/nodeProps';
 import {hideToolModal} from 'shared/atoms/toolModal';
 import ToolsModal from 'shared/components/ToolsModal/ToolsModal';
 import Default from 'shared/edges/default/default';
 import Square from 'shared/nodes/Square/Square';
+import {theme} from 'theme/variables';
+
+import {AddProps} from './types';
 
 import * as S from './styles';
 
@@ -48,13 +50,12 @@ const Home: React.FC = () => {
   const connectingNodeId = useRef<string | null>(null);
   const setNodePropsValue = useSetAtom(nodeProps);
   const nodePropsValue = useAtomValue(nodeProps);
-  const setNodeSelectedID = useSetAtom(nodeSelectedID);
 
-  const addNode = (targetHandle?: string) => {
+  const addNode = ({targetHandle, type, data}: AddProps) => {
     const id = crypto.randomUUID();
     const newNode = {
       id,
-      type: 'square',
+      type,
       position: project({
         x: position.current.x,
         y: position.current.y,
@@ -64,15 +65,19 @@ const Home: React.FC = () => {
       },
     };
     setNodes(nds => nds.concat(newNode));
-    setNodePropsValue({
-      colors: [
-        ...nodePropsValue.colors,
-        {
-          id,
-          color: '#fff',
-        },
-      ],
-    });
+    setNodePropsValue([
+      ...nodePropsValue,
+      {
+        id,
+        color: theme.colors.white,
+        type: type || 'square',
+        data,
+        position: project({
+          x: position.current.x,
+          y: position.current.y,
+        }),
+      },
+    ]);
 
     setEdges(eds =>
       eds.concat({

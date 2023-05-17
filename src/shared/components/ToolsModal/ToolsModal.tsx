@@ -3,18 +3,17 @@ import React, {useState} from 'react';
 import {useAtomValue, useSetAtom} from 'jotai';
 import {ChromePicker} from 'react-color';
 import {hideHandle} from 'shared/atoms/hideHandle';
+import {nodeColor, nodeProps, nodeSelectedID} from 'shared/atoms/nodeProps';
 import {hideToolModal} from 'shared/atoms/toolModal';
+import Square from 'shared/nodes/Square/Square';
 
-import {nodeColor, nodeProps, nodeSelectedID} from '../../atoms/nodeProps';
 import {mockDefaultProps} from '../../constants';
-import Square from '../../nodes/Square/Square';
 import {getIndexById} from '../../utils';
 
-import * as S from './styles';
+import {ToolsModalProps} from './types';
+import {NodeCustomType} from 'shared/nodes/Square/types';
 
-type ToolsModalProps = {
-  addNode: (target: string) => void;
-};
+import * as S from './styles';
 
 const ToolsModal: React.FC<ToolsModalProps> = ({addNode}) => {
   const setOnHideHandle = useSetAtom(hideHandle);
@@ -33,12 +32,10 @@ const ToolsModal: React.FC<ToolsModalProps> = ({addNode}) => {
   };
 
   const updateObjectColorById = (id: string, newColor: string) => {
-    const colorID = getIndexById(nodePropsValue.colors, id);
-    if (colorID && colorID >= 0 && newColor) {
-      const aux = {
-        colors: nodePropsValue.colors,
-      };
-      aux.colors[colorID].color = newColor;
+    const colorID = getIndexById(nodePropsValue, id);
+    if (colorID?.toString() && colorID >= 0 && newColor) {
+      const aux = nodePropsValue;
+      aux[colorID].color = newColor;
       setNodePropsValue(aux);
     }
   };
@@ -62,13 +59,6 @@ const ToolsModal: React.FC<ToolsModalProps> = ({addNode}) => {
           }}>
           X
         </S.ButtonClose>
-        <S.Button
-          className="modal-close"
-          onClick={() => {
-            setOnHideHandle(false);
-          }}>
-          Ocultar nodes
-        </S.Button>
         <S.Title>Painel de Ferramentas</S.Title>
         <div>
           <p>Este é o conteúdo do modal.</p>
@@ -80,7 +70,13 @@ const ToolsModal: React.FC<ToolsModalProps> = ({addNode}) => {
                 className="modal-close"
                 onClick={() => {
                   setOnHideHandle(false);
-                  addNode(selectedCheckbox);
+                  addNode({
+                    targetHandle: selectedCheckbox,
+                    type: NodeCustomType.Square,
+                    data: {
+                      mensage: 'Square',
+                    },
+                  });
                   setHideToolModal(false);
                 }}>
                 Adicionar Square
